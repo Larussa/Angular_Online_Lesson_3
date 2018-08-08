@@ -67,6 +67,9 @@ export class PostsComponent implements OnInit {
     addNewPost.id = request.id;
     this.posts.unshift(addNewPost);
     this.form.resetForm();
+    this.toastr.success('New post add success','message');
+  }, error => {
+    this.toastr.error(error.message, error);
   });
   }
 

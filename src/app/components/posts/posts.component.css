@@ -4,7 +4,7 @@ label span, p span {
   font-weight: 500;
   font-style: italic;
 }
-label, h6 {
+label, h6, h4 {
   color: #17a2b8;;
 }
 p {
