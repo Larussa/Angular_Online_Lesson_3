@@ -1,0 +1,107 @@
+<div class="container mt-3">
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    loadingText="Loading..."
+    type="ball-scale-multiple">
+  </ngx-spinner>
+<div class="card card-form mb-3">
+  <div class="card-body">
+    <form (ngSubmit)="onSubmitPost(form)" #form = "ngForm">
+      <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="userId">UserId<span>*</span></label>
+        <input
+          type="number"
+          id='userId'
+          class="form-control"
+          [(ngModel)]="addPost.userId"
+          [ngClass]="{'is-invalid':postUserId.errors && form.submitted}"
+          #postUserId="ngModel"
+          name="userId"
+          required
+          pattern="[0-9]{1,2}"
+        >
+        <div class="invalid-feedback" [hidden]="!postUserId.errors?.required">Field UserId required</div>
+        <div class="invalid-feedback" [hidden]="!postUserId.errors?.pattern">Field UserId must be at 2</div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="title">Title<span>*</span></label>
+        <input
+          type="text"
+          id='title'
+          class="form-control"
+          [(ngModel)]="addPost.title"
+          name="title"
+          [ngClass]="{'is-invalid':postTitle.errors && form.submitted}"
+          #postTitle="ngModel"
+          required
+          minlength="3"
+        >
+        <div class="invalid-feedback" [hidden]="!postTitle.errors?.required">Field LastName required</div>
+        <div class="invalid-feedback" [hidden]="!postTitle.errors?.minlength"> Field Title must be at least 2 char</div>
+      </div>
+    </div>
+      <!-- /.form-row-->
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label for="body">Your text<span>*</span></label>
+          <textarea
+            class="form-control"
+            id="body"
+            rows="3"
+            [(ngModel)]="addPost.body"
+            [ngClass]="{'is-invalid':postBody.errors && form.submitted}"
+            #postBody="ngModel"
+            name="body"
+            minlength="20"
+            required
+          >
+          </textarea>
+          <div class="invalid-feedback" [hidden]="!postBody.errors?.required">Field Your text required</div>
+          <div class="invalid-feedback" [hidden]="!postBody.errors?.minlength">Field Your text must be at least 20 char</div>
+        </div>
+      </div>
+      <!-- /.form-row-->
+      <button type="submit" class="btn btn-outline-info mb-3">Add Post</button>
+      <p><span>*</span> All required fields must be filled out <p>
+    </form>
+    <!-- ./ form-->
+  </div>
+  <!-- ./ card-body -->
+</div>
+  <!-- /.card car-form -->
+  <div class="row">
+    <div class="col col-12 mb-3" *ngFor="let post of posts">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title"> {{ post.title | uppercase }} </h6>
+          <p class="card-text"> {{ post.body }} </p>
+          <button class="btn btn-outline-info m-1" (click)="getPostComments(post)">
+            {{ post.comments ? 'Hide comments' : 'Show comments' }}
+          </button>
+          <button class="btn btn-outline-danger m-1" *ngIf="isAdmin" (click)="onDelete(post)">Delete post</button>
+          <div class="card mt-3" *ngIf="post.comments">
+            <h6 class="card-header"> Comments </h6>
+            <div class="card-body">
+              <div class="card-text card_font mb-2" *ngFor="let comment of post.comments; let i = index">
+                <h6 class="mb-2"> Comment {{ i + 1 }} </h6>
+                <p> <span>Name</span>: {{ comment.name }} </p>
+                <p class="p-email"> <span >Email</span>: {{ comment.email }} </p>
+                <p> <span>Comment</span>: {{ comment.body }} </p>
+              </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+    <!-- /.col col-12 -->
+  </div>
+  <!-- /.row-->
+</div>
+<!-- /.container -->
